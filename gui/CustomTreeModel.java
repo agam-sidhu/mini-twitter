@@ -1,5 +1,5 @@
 package gui;
-import javax.swing.*;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -7,7 +7,7 @@ import backend.Group;
 import backend.User;
 
 import java.util.Map;
-import java.util.UUID;
+
 
 public class CustomTreeModel extends DefaultTreeModel {
     public CustomTreeModel(Map<String, Group> groups, Map<String, User> users) {

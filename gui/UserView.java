@@ -114,9 +114,8 @@ public class UserView extends BasePanel implements Observer{
     
     private void postTweet() {
         String tweetText = newTweetTextField.getText()+ "\n";
-        //appendToNewsFeed(username + ": " + tweetText);
         Twitter twitter = BaseTwitter.getInstance();
-        twitter.postMessage(username,tweetText);
+        twitter.postMessage(username, tweetText);
         currentUserMessages.append(tweetText);
         observables.notifyObservers(tweetText);
         
