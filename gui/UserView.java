@@ -116,7 +116,7 @@ public class UserView extends BasePanel implements Observer{
         String tweetText = newTweetTextField.getText()+ "\n";
         //appendToNewsFeed(username + ": " + tweetText);
         Twitter twitter = BaseTwitter.getInstance();
-        twitter.postMessage(username, tweetText);
+        twitter.postMessage(username,tweetText);
         currentUserMessages.append(tweetText);
         observables.notifyObservers(tweetText);
         
@@ -134,13 +134,6 @@ public class UserView extends BasePanel implements Observer{
         }
         followUserIdTextField.setText("");
     }
-    public static void main(String[] args) {
-        CustomConcereteObservable observe = new CustomConcereteObservable();
-
-        SwingUtilities.invokeLater(() -> new UserView("SampleUser", observe).setVisible(true));
-    }
-
-
     public void update(String message) {
         newsFeedTextArea.setText("");
         Twitter twitter = BaseTwitter.getInstance();
@@ -149,7 +142,7 @@ public class UserView extends BasePanel implements Observer{
         buffer.append(currentUserMessages.toString());
         for(String msg : msgs) {
             buffer.append(msg);
-        } 
+        }
         newsFeedTextArea.setText(buffer.toString());
             
     }
