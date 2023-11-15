@@ -282,8 +282,4 @@ public class AdminPanel extends BasePanel{
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new AdminPanel(200));
-    }
 }
