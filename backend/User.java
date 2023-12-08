@@ -9,11 +9,13 @@ public class User {
     private UUID userID;
     private String userName;
     private Set<String> following;
+    private long creationTime;
 
     public User() {
         this.userID = UUID.randomUUID();
         this.userName = "";
         this.following = new LinkedHashSet<>();
+        this.creationTime = System.currentTimeMillis();
   
     }
 
@@ -21,6 +23,7 @@ public class User {
         this.userID = UUID.randomUUID();
         this.userName = username;
         this.following = new LinkedHashSet<>();
+        this.creationTime = System.currentTimeMillis();
 
     }
 
@@ -40,5 +43,8 @@ public class User {
     }
     public Set<String> getFollowings(){
         return following;
+    }
+    public long getTime(){
+        return creationTime;
     }
 }

@@ -187,6 +187,7 @@ public class AdminPanel extends BasePanel{
     
     private void displayUserInfo(User user) {
         System.out.println("Opening UserView for username: " + user.getUsername());
+        System.out.println("Priinting creation time" + user.getTime());
         // Open UserView for the selected user
         UserView userView = new UserView(user, observables);
         observables.addObserver(userView);

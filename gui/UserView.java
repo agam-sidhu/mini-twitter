@@ -11,6 +11,7 @@ import java.util.Set;
 public class UserView extends BasePanel implements Observer{
 
     private String username;
+    private long creationTime;
     private CustomConcereteObservable observables;
     private JTextArea userInfoTextArea;
     private JTextArea newsFeedTextArea;
@@ -22,6 +23,7 @@ public class UserView extends BasePanel implements Observer{
     private JList<String> followingsList;
 
     private StringBuffer currentUserMessages = new StringBuffer();
+    private JLabel creationTimeLabel = new JLabel("Creation Time: ");
 
     
 
@@ -30,10 +32,12 @@ public class UserView extends BasePanel implements Observer{
         this.observables = observables;
         initializeComponents();
         buildUI();
+        //updateTitle(user.getCreationTime());
     }
     public UserView(User user, CustomConcereteObservable observables) {
         this.username = user.getUsername();
         this.observables = observables;
+        this.creationTime = user.getTime();
         initializeComponents();
         buildUI();
         // Your constructor logic here, using the User object
@@ -62,10 +66,11 @@ public class UserView extends BasePanel implements Observer{
     }
 
     private void buildUI() {
-        setTitle(username + "'s User View");
+        setTitle(username + "'s User View \n Created Time: "+ creationTime);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
     
+        //followUserPanel.add(creationTimeLabel);
         // Follow User Panel
         JPanel followUserPanel = new JPanel(new FlowLayout());
         followUserPanel.setBorder(BorderFactory.createTitledBorder("Follow User"));
@@ -144,6 +149,9 @@ public class UserView extends BasePanel implements Observer{
         }
         newsFeedTextArea.setText(buffer.toString());
             
+    }
+    private void updateTitle(long creationTime) {
+        setTitle(username + "'s User View - Created at: " + creationTime);
     }
 
 }
