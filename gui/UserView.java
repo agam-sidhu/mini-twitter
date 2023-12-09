@@ -66,7 +66,7 @@ public class UserView extends BasePanel implements Observer{
     }
 
     private void buildUI() {
-        setTitle(username + "'s User View \n Created Time: "+ creationTime);
+        setTitle(username + "'s User View Created Time: "+ creationTime);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
     
