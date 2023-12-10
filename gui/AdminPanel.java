@@ -168,7 +168,16 @@ public class AdminPanel extends BasePanel{
     }
 
     private void printLastUser(){
-        showMessage("Entered a random user for now");
+        BaseTwitter baseTwitter = BaseTwitter.getInstance();
+        User latestUpdateUser = baseTwitter.findLatestUpdateUser();
+
+        if (latestUpdateUser != null) {
+            long lastUpdateTime = latestUpdateUser.getLastUpdateTime();
+            String username = latestUpdateUser.getUsername();
+            showMessage("Latest Updated User: " + username + " (Last Update Time: " + lastUpdateTime + ")");
+        } else {
+            showMessage("No users found.");
+        }
     }
 
     private DefaultMutableTreeNode getSelectedNode() {

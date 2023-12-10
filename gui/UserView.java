@@ -165,11 +165,27 @@ public class UserView extends BasePanel implements Observer{
             buffer.append(msg);
         }
         newsFeedTextArea.setText(buffer.toString());
-            
-    }
-    private void updateTitle(long creationTime) {
-        setTitle(username + "'s User View - Created at: " + creationTime);
-    }
+
+        User user = twitter.getUsers().get(username);
+
+        if (user != null) {
+            // Check if the user is following someone
+            Set<String> followings = user.getFollowings();
+
+            if (!followings.isEmpty()) {
+                // If the user is following someone, update the user and print the last update time
+                user.setLastUpdate();
+                System.out.println("Tezting last update for follower " + username + ": " + user.getLastUpdateTime());
+            } else {
+                // If the user is not following anyone, you might want to handle this case accordingly
+                System.out.println("User " + username + " is not following anyone.");
+            }
+        } else {
+            // If the user is not found, handle this case accordingly
+            System.out.println("User not found: " + username);
+        }
+                    
+            }
 
 }
 

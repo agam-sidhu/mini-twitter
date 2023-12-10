@@ -17,7 +17,6 @@ public class User {
         this.userName = "";
         this.following = new LinkedHashSet<>();
         this.creationTime = System.currentTimeMillis();
-  
     }
 
     public User(String username) {

@@ -88,29 +88,53 @@ public class BaseTwitter implements Twitter {
     public void postMessage(String username, String message) {
         if (username != null) {
             Set<String> msgs = messages.get(username);
-            if(msgs == null){
+            if (msgs == null) {
                 msgs = new LinkedHashSet<>();
             }
             msgs.add(message);
             messages.put(username, msgs);
             User user = users.get(username);
+    
             if (user != null) {
                 user.setLastUpdate();
-                System.out.println(user.getLastUpdateTime());
+                System.out.println("Last update time for user " + username + ": " + user.getLastUpdateTime());
+    
+                // Update lastUpdate for followers
+                Set<String> followers = user.getFollowings();
+                for (String follower : followers) {
+                    User followerUser = users.get(follower);
+                    if (followerUser != null) {
+                        followerUser.setLastUpdate();
+                        System.out.println("Last update time for follower " + follower + ": " + followerUser.getLastUpdateTime());
+                    }
+                }
+            } else {
+                System.out.println("User not found: " + username);
             }
         }
     }
 
     public Set<String> getNewsFeed(String username) {
-        Set<String> answer = new LinkedHashSet();
-        User currentUser = users.get(username);
-        
-        for (String followingUser : currentUser.getFollowings()) {
-            Set<String> followingUserMessages = messages.get(followingUser);
-            answer.addAll(followingUserMessages);
+        Set<String> newsFeed = new LinkedHashSet<>();
+        User user = users.get(username);
+
+        if (user != null) {
+            Set<String> currentUserMessages = messages.get(username);
+            if (currentUserMessages != null) {
+                newsFeed.addAll(currentUserMessages);
+            }
+
+            Set<String> followings = user.getFollowings();
+            for (String following : followings) {
+                Set<String> followingMessages = messages.get(following);
+                if (followingMessages != null) {
+                    newsFeed.addAll(followingMessages);
+                }
+            }
         }
-        return answer;
-    }
+
+    return newsFeed;
+}
 
     public int getMessageCount(){
         Set<String> answer = new LinkedHashSet();
@@ -139,5 +163,20 @@ public class BaseTwitter implements Twitter {
         }
         return i;
     }
+    public User findLatestUpdateUser() {
+        User latestUpdateUser = null;
+        long latestUpdateTime = Long.MIN_VALUE;
+
+
+        for (User user : users.values()) {
+            if (user.getLastUpdateTime() > latestUpdateTime) {
+                latestUpdateTime = user.getLastUpdateTime();
+                latestUpdateUser = user;
+                System.out.println("This is the latestUpodate: " + latestUpdateUser);
+            }
+        }
+
+        return latestUpdateUser;
+        }
 
 }
