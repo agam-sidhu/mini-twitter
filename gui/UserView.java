@@ -74,7 +74,7 @@ public class UserView extends BasePanel implements Observer{
         //setLayout(new BorderLayout());
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         add(Box.createRigidArea(new Dimension(0, 0)));
-
+        //check
         JLabel creationTimeLabel = new JLabel("Creation Time: " + creationTime);
         creationTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(creationTimeLabel);
