@@ -48,4 +48,10 @@ public class User {
     public long getTime(){
         return creationTime;
     }
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+    public long setLastUpdate(){
+        return lastUpdateTime = System.currentTimeMillis();
+    }
 }

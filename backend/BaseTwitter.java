@@ -93,6 +93,11 @@ public class BaseTwitter implements Twitter {
             }
             msgs.add(message);
             messages.put(username, msgs);
+            User user = users.get(username);
+            if (user != null) {
+                user.setLastUpdate();
+                System.out.println(user.getLastUpdateTime());
+            }
         }
     }
 
