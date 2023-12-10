@@ -10,6 +10,7 @@ public class User {
     private String userName;
     private Set<String> following;
     private long creationTime;
+    private long lastUpdateTime;
 
     public User() {
         this.userID = UUID.randomUUID();
