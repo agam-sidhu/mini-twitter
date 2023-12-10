@@ -37,6 +37,8 @@ public class AdminPanel extends BasePanel{
     private JButton showGroupTotalButton;
     private JButton showMessageTotalButton;
     private JButton showPositivePercentageButton;
+    private JButton user_groupVerficationButton;
+    private JButton lastUpdatedUserButton;
 
     public AdminPanel(int treeWidth) {
         initializeComponents();
@@ -56,6 +58,8 @@ public class AdminPanel extends BasePanel{
         showGroupTotalButton = new JButton("Show Group Total");
         showMessageTotalButton = new JButton("Show Message Total");
         showPositivePercentageButton = new JButton("Show Positive Percentage");
+        user_groupVerficationButton = new JButton("Show all id verification");
+        lastUpdatedUserButton = new JButton("Show Last Updated User");
 
         // Add action listeners to buttons
         addUserButton.addActionListener(e -> addUser());
@@ -65,6 +69,9 @@ public class AdminPanel extends BasePanel{
         showGroupTotalButton.addActionListener(e -> showGroupTotal());
         showMessageTotalButton.addActionListener(e -> showMessageTotal());
         showPositivePercentageButton.addActionListener(e -> showPositivePercentage());
+        user_groupVerficationButton.addActionListener(e -> checkVerification());
+        lastUpdatedUserButton.addActionListener(e -> printLastUser());
+
     }
     private void addUser() {
         String username = userIdTextField.getText();
@@ -155,6 +162,15 @@ public class AdminPanel extends BasePanel{
             showMessage("Total Positive Percent: " + String.valueOf(number) + "%"); 
         }
     }
+
+    private void checkVerification(){
+        showMessage("This is a test");
+    }
+
+    private void printLastUser(){
+        showMessage("Entered a random user for now");
+    }
+
     private DefaultMutableTreeNode getSelectedNode() {
         return (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
     }
@@ -258,11 +274,13 @@ public class AdminPanel extends BasePanel{
         openUserViewPanel.add(openUserViewButton, gbc);
 
         // Statistics Buttons Panel
-        JPanel statisticsButtonsPanel = new JPanel(new GridLayout(2, 2)); // Two rows, two columns
+        JPanel statisticsButtonsPanel = new JPanel(new GridLayout(3, 2)); // Two rows, two columns
         statisticsButtonsPanel.add(showUserTotalButton);
         statisticsButtonsPanel.add(showGroupTotalButton);
         statisticsButtonsPanel.add(showMessageTotalButton);
         statisticsButtonsPanel.add(showPositivePercentageButton);
+        statisticsButtonsPanel.add(user_groupVerficationButton);
+        statisticsButtonsPanel.add(lastUpdatedUserButton);
 
         // Add Panels to the Frame
         centerPanel.add(idPanel, BorderLayout.NORTH);
