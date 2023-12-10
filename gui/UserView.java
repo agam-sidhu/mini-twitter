@@ -23,13 +23,14 @@ public class UserView extends BasePanel implements Observer{
     private JList<String> followingsList;
 
     private StringBuffer currentUserMessages = new StringBuffer();
-    private JLabel creationTimeLabel = new JLabel("Creation Time: ");
-
+    //private JLabel creationTimeLabel = new JLabel("Creation Time: ");
+ 
     
 
     public UserView(String username, CustomConcereteObservable observables) {
         this.username = username;
         this.observables = observables;
+        //this.creationTime = username.getTime();
         initializeComponents();
         buildUI();
         //updateTitle(user.getCreationTime());
@@ -47,7 +48,8 @@ public class UserView extends BasePanel implements Observer{
         userInfoTextArea = new JTextArea();
         userInfoTextArea.setEditable(false);
         userInfoTextArea.append("User ID: " + username);
-
+        userInfoTextArea.append("\nCreation Time: " + creationTime);
+      
         newsFeedTextArea = new JTextArea();
         newsFeedTextArea.setEditable(false);
 
@@ -63,14 +65,28 @@ public class UserView extends BasePanel implements Observer{
         // Initialize the JList for displaying current followings
         followingsListModel = new DefaultListModel<>();
         followingsList = new JList<>(followingsListModel);
+
     }
 
     private void buildUI() {
-        setTitle(username + "'s User View Created Time: "+ creationTime);
+        setTitle(username + "'s User View  it");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
+        //setLayout(new BorderLayout());
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        add(Box.createRigidArea(new Dimension(0, 0)));
+
+        JLabel creationTimeLabel = new JLabel("Creation Time: " + creationTime);
+        creationTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(creationTimeLabel);
     
         //followUserPanel.add(creationTimeLabel);
+        /*
+         * 
+        
+        JPanel timePanel = new JPanel(new BorderLayout());
+        timePanel.setBorder(BorderFactory.createTitledBorder("Creation time of user"));
+        */
+        //timePanel.add(creationTime);
         // Follow User Panel
         JPanel followUserPanel = new JPanel(new FlowLayout());
         followUserPanel.setBorder(BorderFactory.createTitledBorder("Follow User"));
@@ -109,12 +125,14 @@ public class UserView extends BasePanel implements Observer{
         followingTweetPanel.add(newTweetPanel, BorderLayout.SOUTH);
     
         // Add Panels to the Frame
-        add(followUserPanel, BorderLayout.NORTH);
-        add(followingTweetPanel, BorderLayout.WEST);
+        //add(creationTimePanel, BorderLayout.CENTER);
+        add(followUserPanel, BorderLayout.WEST);
+        add(followingTweetPanel, BorderLayout.CENTER);
         add(newsFeedPanel, BorderLayout.SOUTH);
     
         pack();
         setLocationRelativeTo(null);
+        setVisible(true);
     }
     
     private void postTweet() {
@@ -125,8 +143,7 @@ public class UserView extends BasePanel implements Observer{
         observables.notifyObservers(tweetText);
         
     }
-    
-    
+     
     private void followUser() {
         String userIdToFollow = followUserIdTextField.getText();
         Twitter twitter = BaseTwitter.getInstance();

@@ -77,6 +77,7 @@ public class AdminPanel extends BasePanel{
     
         // Check if the username is already taken
         if (existingUsernames.contains(username)) {
+
             showError("Username is already taken. Please choose a different username.");
             return;
         }
