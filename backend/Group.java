@@ -9,11 +9,13 @@ public class Group {
     private String groupName;
     private Map<String, User> users;
     private Map<String, Group> subgroups;
+    private long creationTime;
 
     // Constructor
     public Group(String name) {
         this.groupID = UUID.randomUUID();
         this.groupName = name;
+        this.creationTime = System.currentTimeMillis();
         this.users = new HashMap<>();
         this.subgroups = new HashMap<>();
     }
@@ -52,6 +54,10 @@ public class Group {
 
     public String toString() {
         return groupName;
+    }
+
+    public long getGroupTime(){
+        return creationTime;
     }
 
 }
