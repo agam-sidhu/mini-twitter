@@ -12,6 +12,8 @@ public class UserView extends BasePanel implements Observer{
 
     private String username;
     private long creationTime;
+    private long lastUpdateTime;
+    private JLabel lastUpdatedLabel;
     private CustomConcereteObservable observables;
     private JTextArea userInfoTextArea;
     private JTextArea newsFeedTextArea;
@@ -22,6 +24,7 @@ public class UserView extends BasePanel implements Observer{
     private DefaultListModel<String> followingsListModel;
     private JList<String> followingsList;
 
+
     private StringBuffer currentUserMessages = new StringBuffer();
     //private JLabel creationTimeLabel = new JLabel("Creation Time: ");
  
@@ -30,7 +33,6 @@ public class UserView extends BasePanel implements Observer{
     public UserView(String username, CustomConcereteObservable observables) {
         this.username = username;
         this.observables = observables;
-        //this.creationTime = username.getTime();
         initializeComponents();
         buildUI();
         //updateTitle(user.getCreationTime());
@@ -39,6 +41,7 @@ public class UserView extends BasePanel implements Observer{
         this.username = user.getUsername();
         this.observables = observables;
         this.creationTime = user.getTime();
+        this.lastUpdateTime = user.getLastUpdateTime();
         initializeComponents();
         buildUI();
         // Your constructor logic here, using the User object
@@ -76,8 +79,10 @@ public class UserView extends BasePanel implements Observer{
         add(Box.createRigidArea(new Dimension(0, 0)));
         //check
         JLabel creationTimeLabel = new JLabel("Creation Time: " + creationTime);
+        lastUpdatedLabel = new JLabel("Last Updated Time: " + lastUpdateTime);
         creationTimeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(creationTimeLabel);
+        add(lastUpdatedLabel);
     
         //followUserPanel.add(creationTimeLabel);
         /*
@@ -156,36 +161,42 @@ public class UserView extends BasePanel implements Observer{
         followUserIdTextField.setText("");
     }
     public void update(String message) {
-        newsFeedTextArea.setText("");
-        Twitter twitter = BaseTwitter.getInstance();
-        Set<String> msgs = twitter.getNewsFeed(username);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(currentUserMessages.toString());
-        for(String msg : msgs) {
-            buffer.append(msg);
-        }
-        newsFeedTextArea.setText(buffer.toString());
-
-        User user = twitter.getUsers().get(username);
-
-        if (user != null) {
-            // Check if the user is following someone
-            Set<String> followings = user.getFollowings();
-
-            if (!followings.isEmpty()) {
-                // If the user is following someone, update the user and print the last update time
-                user.setLastUpdate();
-                System.out.println("Tezting last update for follower " + username + ": " + user.getLastUpdateTime());
+            newsFeedTextArea.setText("");
+            Twitter twitter = BaseTwitter.getInstance();
+            Set<String> msgs = twitter.getNewsFeed(username);
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(currentUserMessages.toString());
+            for(String msg : msgs) {
+                buffer.append(msg);
+            }
+            newsFeedTextArea.setText(buffer.toString());
+    
+            User user = twitter.getUsers().get(username);
+    
+            if (user != null) {
+                // Check if the user is following someone
+                Set<String> followings = user.getFollowings();
+    
+                if (!followings.isEmpty()) {
+                    // If the user is following someone, update the user and print the last update time
+                    user.setLastUpdate();
+                    lastUpdateTime = user.getLastUpdateTime();
+                    SwingUtilities.invokeLater(() -> {
+                        lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);
+                    });
+        
+                } else {
+                    // If the user is not following anyone, you might want to handle this case accordingly
+                    System.out.println("User " + username + " is not following anyone.");
+                    user.setLastUpdate();
+                    lastUpdateTime = user.getLastUpdateTime();
+                    lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);    
+                }
             } else {
-                // If the user is not following anyone, you might want to handle this case accordingly
-                System.out.println("User " + username + " is not following anyone.");
+                // If the user is not found, handle this case accordingly
+                System.out.println("User not found: " + username);
             }
-        } else {
-            // If the user is not found, handle this case accordingly
-            System.out.println("User not found: " + username);
-        }
-                    
-            }
+    }
 
 }
 
