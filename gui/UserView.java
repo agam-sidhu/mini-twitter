@@ -8,6 +8,7 @@ import backend.User;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 public class UserView extends BasePanel implements Observer{
 
@@ -25,6 +26,7 @@ public class UserView extends BasePanel implements Observer{
     private JButton followUserButton;
     private DefaultListModel<String> followingsListModel;
     private JList<String> followingsList;
+    private AdminPanel adminPanel;
 
 
     private StringBuffer currentUserMessages = new StringBuffer();
@@ -32,16 +34,18 @@ public class UserView extends BasePanel implements Observer{
  
     
 
-    public UserView(String username, CustomConcereteObservable observables) {
+    public UserView(String username, CustomConcereteObservable observables, AdminPanel adminPanel) {
         this.username = username;
         this.observables = observables;
+        this.adminPanel = adminPanel;
         initializeComponents();
         buildUI();
         //updateTitle(user.getCreationTime());
     }
-    public UserView(User user, CustomConcereteObservable observables) {
+    public UserView(User user, CustomConcereteObservable observables, AdminPanel adminPanel) {
         this.username = user.getUsername();
         this.observables = observables;
+        this.adminPanel = adminPanel;
         this.creationTime = user.getTime();
         this.lastUpdateTime = user.getLastUpdateTime();
         initializeComponents();
@@ -197,45 +201,6 @@ public class UserView extends BasePanel implements Observer{
     }
     public void update(String message) {
         
-        newsFeedTextArea.setText("");
-        Twitter twitter = BaseTwitter.getInstance();
-        Set<String> msgs = twitter.getNewsFeed(username);
-        Set<String> old = twitter.getNewsFeed(username);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(currentUserMessages.toString());
-        for(String msg : msgs) {
-            buffer.append(msg);
-        }
-        newsFeedTextArea.setText(buffer.toString());
-    
-        User user = twitter.getUsers().get(username);
-            if (user.hasFollowers()) {
-                // If the user has followers and the news feed has been updated, set the last update time for the user
-                lastUpdateTime = user.setLastUpdate();
-                SwingUtilities.invokeLater(() -> {
-                    lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);
-                }); 
-                // Update last update time for followers
-                Set<String> followers = user.getFollowers();
-                for (String follower : followers) {
-                    User followerUser = twitter.getUsers().get(follower);
-                    if (followerUser != null) {
-                        followerUser.setLastUpdateTime(lastUpdateTime);
-                        SwingUtilities.invokeLater(() -> {
-                            lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);
-                        });
-
-                    }
-                }
-            } else {
-                System.out.println("No update needed for " + username);
-                SwingUtilities.invokeLater(() -> {
-                    lastUpdatedLabel.setText("Last Updated Time: " + user.getLastUpdateTime());
-                });
-            }
-        } 
-        
-         /* 
             newsFeedTextArea.setText("");
             Twitter twitter = BaseTwitter.getInstance();
             Set<String> msgs = twitter.getNewsFeed(username);
@@ -271,7 +236,7 @@ public class UserView extends BasePanel implements Observer{
                 // If the news feed is not updated, you might want to handle this case accordingly
                 
             }
-           */
+    }
             /* 
             newsFeedTextArea.setText("");
             Twitter twitter = BaseTwitter.getInstance();
@@ -374,6 +339,7 @@ public class UserView extends BasePanel implements Observer{
             });\
             */
         }
+
 }
 
 

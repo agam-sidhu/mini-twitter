@@ -39,6 +39,7 @@ public class AdminPanel extends BasePanel{
     private JButton showPositivePercentageButton;
     private JButton user_groupVerficationButton;
     private JButton lastUpdatedUserButton;
+    private List<UserView> userViews = new ArrayList<>();
 
     public AdminPanel(int treeWidth) {
         initializeComponents();
@@ -213,13 +214,15 @@ public class AdminPanel extends BasePanel{
     
     private void displayUserInfo(User user) {
         System.out.println("Opening UserView for username: " + user.getUsername());
-        System.out.println("Priinting creation time" + user.getTime());
+        System.out.println("Printing creation time" + user.getTime());
         // Open UserView for the selected user
-        UserView userView = new UserView(user, observables);
+        UserView userView = new UserView(user, observables, this);
         observables.addObserver(userView);
         userView.setVisible(true);
 
-        
+    }
+    public List<UserView> getUserViewsList() {
+        return userViews;
     }
     
 
@@ -311,4 +314,5 @@ public class AdminPanel extends BasePanel{
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+    
 }
