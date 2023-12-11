@@ -3,5 +3,6 @@ package gui;
 
 interface Observer {
     void update(String message);
+    void setLastUpdate();
 
 }

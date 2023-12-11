@@ -16,5 +16,7 @@ public interface Twitter {
     Set<String> getNewsFeed(String username);
     int getMessageCount();
     int getPositiveMessageCount();
+    Set<String> getFollowerList(String username);
+    void updateFollowersLastUpdateTime(String username);
 
 }

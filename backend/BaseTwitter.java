@@ -13,6 +13,7 @@ public class BaseTwitter implements Twitter {
     private Map<String, Group> groups;
     private Map<String, Set<String>> messages;
     private Map<String, String> memberships;
+    private Map<String, User> followerList;
     private String[] postiveWords = {"good", "great", "excellent"};
 
     // Constructor
@@ -21,6 +22,7 @@ public class BaseTwitter implements Twitter {
         this.groups = new HashMap<>();
         this.messages = new HashMap<>();
         this.memberships = new HashMap<>();
+        this.followerList = new HashMap<>();
         this.groups.put("Root", new Group("Root"));
     }
 
@@ -80,9 +82,28 @@ public class BaseTwitter implements Twitter {
     }
 
     public void followerUser(String follower, String following) {
+        /* 
         if (follower != null && following != null) {
             users.get(follower).follow(users.get(following));
         }
+        */
+        //This will print the new follower for whomever so if I have a follow b it will print a
+        User followerUser = users.get(follower);
+        System.out.println("This is followerr User " + followerUser);
+        //This will print the new following for whomever so if I have a follow b it will print b
+        User followingUser = users.get(following);
+        System.out.println("This is following User: "+ followingUser);
+    
+        if (followerUser != null && followingUser != null) {
+            followerUser.follow(followingUser);
+            // Update the follower list for the user being followed
+            followingUser.addFollower(follower);
+            //this is in format of a is now following b
+            followingUser.addFollowing(following);
+            System.out.println("FOLLOWERS OF USER: " + followerUser + followingUser);
+            System.out.println("WHO THEY FOLLOWING:" + following);
+        }
+
     }
 
     public void postMessage(String username, String message) {
@@ -94,13 +115,18 @@ public class BaseTwitter implements Twitter {
             msgs.add(message);
             messages.put(username, msgs);
             User user = users.get(username);
+            user.setLastUpdate();
+            
+        
+            /* 
+            User user = users.get(username);
     
             if (user != null) {
                 user.setLastUpdate();
                 System.out.println("Last update time for user " + username + ": " + user.getLastUpdateTime());
     
                 // Update lastUpdate for followers
-                Set<String> followers = user.getFollowings();
+                Set<String> followers = user.getFollowers(); //getfollowings
                 for (String follower : followers) {
                     User followerUser = users.get(follower);
                     if (followerUser != null) {
@@ -111,6 +137,7 @@ public class BaseTwitter implements Twitter {
             } else {
                 System.out.println("User not found: " + username);
             }
+            */
         }
     }
 
@@ -167,7 +194,6 @@ public class BaseTwitter implements Twitter {
         User latestUpdateUser = null;
         long latestUpdateTime = Long.MIN_VALUE;
 
-
         for (User user : users.values()) {
             if (user.getLastUpdateTime() > latestUpdateTime) {
                 latestUpdateTime = user.getLastUpdateTime();
@@ -177,6 +203,43 @@ public class BaseTwitter implements Twitter {
         }
 
         return latestUpdateUser;
+    }
+    public Set<String> getFollowerList(String username) {
+        User user = users.get(username);
+        if (user != null) {
+            return user.getFollowers();
+        } else {
+            System.out.println("User not found: " + username);
+            return null;
         }
+    }
+    public boolean hasFollowers(String username){
+        User user = users.get(username);
+        Set<String> followers = user.getFollowers();
+        if(followers == null){
+            return false;
+        }
+        return true;
+    }
+    public void updateFollowersLastUpdateTime(String username) {
+        User user = users.get(username);
+        
+        if (hasFollowers(username)) {
+            long userLastUpdateTime = user.getLastUpdateTime();
+    
+            Set<String> followers = user.getFollowers();
+            for (String follower : followers) {
+                User followerUser = users.get(follower);
+                if (followerUser != null) {
+                    // Update the last update time for each follower
+                    followerUser.setLastUpdateTime(userLastUpdateTime);
+                    System.out.println("This is new updatetime for user"+ followerUser+ " "+ userLastUpdateTime);
+                }
+            }
+        } else {
+            System.out.println("User not found: " + username);
+        }
+    }
+    
 
 }

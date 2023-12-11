@@ -9,13 +9,15 @@ public class User {
     private UUID userID;
     private String userName;
     private Set<String> following;
+    private Set<String> followers;
     private long creationTime;
-    private long lastUpdateTime;
+    public long lastUpdateTime;
 
     public User() {
         this.userID = UUID.randomUUID();
         this.userName = "";
         this.following = new LinkedHashSet<>();
+        this.followers = new LinkedHashSet<>();
         this.creationTime = System.currentTimeMillis();
     }
 
@@ -23,6 +25,7 @@ public class User {
         this.userID = UUID.randomUUID();
         this.userName = username;
         this.following = new LinkedHashSet<>();
+        this.followers = new LinkedHashSet<>();
         this.creationTime = System.currentTimeMillis();
 
     }
@@ -40,6 +43,13 @@ public class User {
     }
     public void follow(User userToFollow) {
         following.add(userToFollow.getUsername());
+        //userToFollow.addFollower(this.getUsername());
+        
+        userToFollow.setLastUpdateTime(this.getLastUpdateTime());
+    }
+
+    public void following(User userFollowing){
+        followers.add(userFollowing.getUsername());
     }
     public Set<String> getFollowings(){
         return following;
@@ -53,4 +63,26 @@ public class User {
     public long setLastUpdate(){
         return lastUpdateTime = System.currentTimeMillis();
     }
+    public long setLastUpdateTime(long updateTime){
+        return lastUpdateTime = updateTime;
+    }
+
+    public Set<String> getFollowers() {
+        return followers;
+    }
+
+    public void addFollower(String followerId) {
+        followers.add(followerId);
+    }
+    public void addFollowing(String userIdToFollow) {
+        following.add(userIdToFollow);
+    }
+    public boolean hasFollowers(){
+        return !followers.isEmpty(); 
+    }
+
+    public boolean hasFollowings(){
+        return !following.isEmpty();
+    }
+
 }
