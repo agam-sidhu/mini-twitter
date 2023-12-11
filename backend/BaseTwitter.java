@@ -82,17 +82,16 @@ public class BaseTwitter implements Twitter {
     }
 
     public void followerUser(String follower, String following) {
-        /* 
         if (follower != null && following != null) {
             users.get(follower).follow(users.get(following));
         }
-        */
+        /* 
         //This will print the new follower for whomever so if I have a follow b it will print a
         User followerUser = users.get(follower);
-        System.out.println("This is followerr User " + followerUser);
+
         //This will print the new following for whomever so if I have a follow b it will print b
         User followingUser = users.get(following);
-        System.out.println("This is following User: "+ followingUser);
+
     
         if (followerUser != null && followingUser != null) {
             followerUser.follow(followingUser);
@@ -100,10 +99,7 @@ public class BaseTwitter implements Twitter {
             followingUser.addFollower(follower);
             //this is in format of a is now following b
             followingUser.addFollowing(following);
-            System.out.println("FOLLOWERS OF USER: " + followerUser + followingUser);
-            System.out.println("WHO THEY FOLLOWING:" + following);
-        }
-
+*/
     }
 
     public void postMessage(String username, String message) {
@@ -116,52 +112,23 @@ public class BaseTwitter implements Twitter {
             messages.put(username, msgs);
             User user = users.get(username);
             user.setLastUpdate();
-            
-        
-            /* 
-            User user = users.get(username);
-    
-            if (user != null) {
-                user.setLastUpdate();
-                System.out.println("Last update time for user " + username + ": " + user.getLastUpdateTime());
-    
-                // Update lastUpdate for followers
-                Set<String> followers = user.getFollowers(); //getfollowings
-                for (String follower : followers) {
-                    User followerUser = users.get(follower);
-                    if (followerUser != null) {
-                        followerUser.setLastUpdate();
-                        System.out.println("Last update time for follower " + follower + ": " + followerUser.getLastUpdateTime());
-                    }
-                }
-            } else {
-                System.out.println("User not found: " + username);
-            }
-            */
         }
     }
 
     public Set<String> getNewsFeed(String username) {
-        Set<String> newsFeed = new LinkedHashSet<>();
-        User user = users.get(username);
-
-        if (user != null) {
-            Set<String> currentUserMessages = messages.get(username);
-            if (currentUserMessages != null) {
-                newsFeed.addAll(currentUserMessages);
+        Set<String> answer = new LinkedHashSet();
+        User currentUser = users.get(username);
+        
+        for (String followingUser : currentUser.getFollowings()) {
+            Set<String> followingUserMessages = messages.get(followingUser);
+            if (followingUserMessages != null) {
+                answer.addAll(followingUserMessages);
             }
-
-            Set<String> followings = user.getFollowings();
-            for (String following : followings) {
-                Set<String> followingMessages = messages.get(following);
-                if (followingMessages != null) {
-                    newsFeed.addAll(followingMessages);
-                }
-            }
+            //answer.addAll(followingUserMessages);
+        }
+        return answer;
         }
 
-    return newsFeed;
-}
 
     public int getMessageCount(){
         Set<String> answer = new LinkedHashSet();
