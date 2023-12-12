@@ -120,6 +120,7 @@ public class AdminPanel extends BasePanel{
         String groupName = groupIdTextField.getText(); // Assuming the input field is for the group name
         DefaultMutableTreeNode selectedNode = getSelectedNode();
 
+
         if (groupName.contains(" ")) {
             idIsValid = false;
             isGroupSpace = true;
@@ -132,7 +133,6 @@ public class AdminPanel extends BasePanel{
         if (isGroupNameDuplicate(selectedNode, groupName)) {
             idIsValid = false;
             isGroupDuplicate = true;
-            //checkVerification();
             //return;
         }    
         
@@ -148,7 +148,7 @@ public class AdminPanel extends BasePanel{
                 DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(newGroup);
                 selectedNode.add(groupNode); 
             }
-
+            System.out.println("Group created: " + newGroup + ": " + newGroup.getGroupTime());
             ((DefaultTreeModel) tree.getModel()).reload(selectedNode);
             for(String key: newGroup.getSubgroups().keySet()){
                 Map<String, Group> subgroups = (Map<String, Group>) newGroup.getSubgroups().get(key);
