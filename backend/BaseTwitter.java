@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.swing.SwingUtilities;
+
 public class BaseTwitter implements Twitter {
     private Map<String, User> users;
     private Map<String, Group> groups;
@@ -112,7 +114,51 @@ public class BaseTwitter implements Twitter {
             messages.put(username, msgs);
             User user = users.get(username);
             user.setLastUpdate();
-        }
+            long userLastUpdateTime = user.getLastUpdateTime();
+            /* 
+            if(isFollowing(username)){
+                user.getLastUpdateTime();
+                Set<String> followings = user.getFollowings();
+                for(String follow : followings){
+                    User followingUser = users.get(follow);
+                    if (followingUser != null) {
+                        long followingUserLastUpdateTime = followingUser.getLastUpdateTime();
+                        System.out.println(username + " is following " + follow);
+                        System.out.println("User's last update time: " + userLastUpdateTime);
+                        System.out.println(follow + "'s last update time: " + followingUserLastUpdateTime);
+
+                        // Compare update times
+                        if (userLastUpdateTime < followingUserLastUpdateTime) {
+                            user.setLastUpdateTime(followingUserLastUpdateTime);
+                            System.out.println(username + " should update their feed!");
+                            // Add logic here to handle the case where the user should update their feed
+                        } else {
+                            System.out.println(username + " doesn't need to update their feed.");
+                        }
+                }
+                */
+
+                //}
+
+            }
+            /* 
+            if (user.hasFollowers()) {
+            // If the user has followers, update the last update time for the user and their followers
+                long userLastUpdateTime = user.getLastUpdateTime();
+
+                Set<String> followers = user.getFollowers();
+                for (String follower : followers) {
+                    User followerUser = users.get(follower);
+                    if (followerUser != null) {
+                        // Update the last update time for each follower
+                        followerUser.setLastUpdateTime(userLastUpdateTime);
+                        System.out.println("This is new update time for user " + followerUser + " " + userLastUpdateTime);
+                    }
+                }
+
+            } 
+            */
+        //}
     }
 
     public Set<String> getNewsFeed(String username) {
@@ -188,6 +234,17 @@ public class BaseTwitter implements Twitter {
         }
         return true;
     }
+
+    public boolean isFollowing(String follower) {
+        User followerUser = users.get(follower);
+    
+        if (followerUser != null) {
+            return !followerUser.getFollowings().isEmpty();
+        }
+    
+        return false;
+    }
+
     public void updateFollowersLastUpdateTime(String username) {
         User user = users.get(username);
         

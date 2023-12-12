@@ -153,19 +153,6 @@ public class UserView extends BasePanel implements Observer{
     }
      
     private void followUser() {
-        /* 
-         
-        String userIdToFollow = followUserIdTextField.getText();
-        Twitter twitter = BaseTwitter.getInstance();
-        twitter.followerUser(username, userIdToFollow);
-
-        Set<String> followers = twitter.getUsers().get(username).getFollowings();
-        for(String follow : followers){
-            followingsListModel.addElement(follow);
-            JOptionPane.showMessageDialog(this, "You are now following user: " + userIdToFollow);
-        }
-        followUserIdTextField.setText("");
-        */
         String userIdToFollow = followUserIdTextField.getText();
         Twitter twitter = BaseTwitter.getInstance();
         
@@ -203,7 +190,6 @@ public class UserView extends BasePanel implements Observer{
         newsFeedTextArea.setText(buffer.toString());
         
         User user = twitter.getUsers().get(username);
-           
         if (user.hasFollowers()) {
                 // If the news feed has been updated, set the last update time for the user
                 lastUpdateTime = user.setLastUpdate();
@@ -225,62 +211,8 @@ public class UserView extends BasePanel implements Observer{
                 // If the news feed is not updated, you might want to handle this case accordingly
                 
             }
+    
     }
-            /* 
-            newsFeedTextArea.setText("");
-            Twitter twitter = BaseTwitter.getInstance();
-            Set<String> msgs = twitter.getNewsFeed(username);
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(currentUserMessages.toString());
-            buffer.append("\nLast Updated: ").append(java.time.LocalDateTime.now()).append("\n");
-            for (String msg : msgs) {
-                buffer.append(msg);
-            }
-            newsFeedTextArea.setText(buffer.toString());
-            lastUpdateTime = System.currentTimeMillis();
-            */
-  /*  
-            User user = twitter.getUsers().get(username);
-
-            if (user != null) {
-                // Check if the user is following someone
-                Set<String> followings = user.getFollowings();
-
-                if (!followings.isEmpty()) {
-                    // Update the last update time for the user
-                    user.setLastUpdate();
-
-                    lastUpdateTime = user.getLastUpdateTime();
-                    SwingUtilities.invokeLater(() -> {
-                        lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);
-                    });
-
-                    // Iterate through followers and update their last update time
-                    for (String follower : followings) {
-                        User followerUser = twitter.getUsers().get(follower);
-                        if (followerUser != null) {
-                            followerUser.setLastUpdate();
-
-                        }
-                    }
-                } else {
-                    // If the user is not following anyone, you might want to handle this case accordingly
-                    
-                    user.setLastUpdate();
-                    user.lastUpdateTime = user.getLastUpdateTime();
-                    lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);                    
-                    
-                    System.out.println("User " + username + " is not following anyone.");
-                    user.setLastUpdate();
-                    lastUpdateTime = user.getLastUpdateTime();
-                    lastUpdatedLabel.setText("Last Updated Time: " + lastUpdateTime);
-                    
-                }
-            } else {
-                // If the user is not found, handle this case accordingly
-                System.out.println("User not found: " + username);
-            }
-            */
 
 }
 
