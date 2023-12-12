@@ -30,6 +30,11 @@ public class AdminPanel extends BasePanel{
     private JTextArea userInfoTextArea;
     private JTextField userIdTextField;
     private JTextField groupIdTextField;
+    private boolean idIsValid = true;
+    private boolean isUserDuplicate = false;
+    private boolean isGroupDuplicate = false;
+    private boolean isUserSpace = false;
+    private boolean isGroupSpace = false;
     private JButton addUserButton;
     private JButton addGroupButton;
     private JButton openUserViewButton;
@@ -85,9 +90,14 @@ public class AdminPanel extends BasePanel{
     
         // Check if the username is already taken
         if (existingUsernames.contains(username)) {
-
-            showError("Username is already taken. Please choose a different username.");
-            return;
+            idIsValid = false;
+            isUserDuplicate = true;
+            //showError("Username is already taken. Please choose a different username.");
+            //return;
+        }
+        if (username.contains(" ")){
+            idIsValid = false;
+            isUserSpace = true;
         }
     
         // Create a new User instance with the given username
@@ -109,6 +119,22 @@ public class AdminPanel extends BasePanel{
     private void addGroup() {
         String groupName = groupIdTextField.getText(); // Assuming the input field is for the group name
         DefaultMutableTreeNode selectedNode = getSelectedNode();
+
+        if (groupName.contains(" ")) {
+            idIsValid = false;
+            isGroupSpace = true;
+            //showError("Group name cannot contain spaces.");
+            //showError("Please enter a valid group name.");
+            //return;
+        }
+    
+        // Check if the group name is already taken
+        if (isGroupNameDuplicate(selectedNode, groupName)) {
+            idIsValid = false;
+            isGroupDuplicate = true;
+            //checkVerification();
+            //return;
+        }    
         
         try{
             Group newGroup = null;
@@ -139,6 +165,18 @@ public class AdminPanel extends BasePanel{
 
     }
 
+    private boolean isGroupNameDuplicate(DefaultMutableTreeNode selectedNode, String groupName) {
+        for (int i = 0; i < selectedNode.getChildCount(); i++) {
+            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) selectedNode.getChildAt(i);
+            if (childNode.getUserObject() instanceof Group) {
+                Group group = (Group) childNode.getUserObject();
+                if (group.getGroupName().equals(groupName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     private void showUserTotal() {
         int userTotal = countUsers(root);
         showMessage("Total Users: " + userTotal);
@@ -165,7 +203,21 @@ public class AdminPanel extends BasePanel{
     }
 
     private void checkVerification(){
-        showMessage("This is a test");
+        if(idIsValid){
+            showMessage("All IDs are valid");
+        }else{
+            if(isUserDuplicate){
+                showMessage("All IDs are not valid: Duplicate User ID detected"); 
+            }if(isUserSpace){
+                showMessage("All IDs are not valid: Space is detected for a User ID");
+            }
+            if(isGroupDuplicate){
+                showMessage("All IDs are not valid: Duplicate Group ID detected");  
+            }
+            if(isGroupSpace){
+                showMessage("All IDs are not valid: Space is detected in a Group ID");
+            }
+        }
     }
 
     private void printLastUser(){

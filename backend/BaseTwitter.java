@@ -41,7 +41,7 @@ public class BaseTwitter implements Twitter {
     }
 
     public User createUserInGroup(String username, String groupname) {
-        if(users.containsKey(username)) throw new IllegalArgumentException("User already exists");
+        //if(users.containsKey(username)) throw new IllegalArgumentException("User already exists");
         User user = new User(username);
         users.put(user.getUsername(), user);
         memberships.put(username, groupname);
@@ -50,7 +50,7 @@ public class BaseTwitter implements Twitter {
     
     public Group createGroup(String parentGroupName, String groupName) {
         // Create a new group
-        if(groups.containsKey(groupName)) throw new IllegalArgumentException("Group already exists");
+        //if(groups.containsKey(groupName)) throw new IllegalArgumentException("Group already exists");
         if(groupName == "") throw new IllegalArgumentException("Please provide a group name");
  
         Group group = new Group(groupName);
